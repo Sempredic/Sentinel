@@ -17,25 +17,9 @@ namespace WindowsFormsApp2
         [STAThread]
         static void Main()
         {
+
             MongoCRUD.GetInstance().ConnectToDB("Serials");
-            /*
-            SerialInfo si = new SerialInfo();
 
-            si.serial = "345345345345";
-
-            LocationData d = new LocationData();
-            d.curCase = "asdfasdf";
-            d.date = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
-            d.time = DateTime.Now.ToString("h:mm:ss tt");
-            d.location = "Outbound";
-            d.lastLocation = false;
-            d.userID = "311015";
-
-            si.locationData.Add(d);
-            
-            MongoCRUD.GetInstance().InsertRecord("Serial", si);
-
-    */
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
@@ -59,7 +43,9 @@ namespace WindowsFormsApp2
 
         public void ConnectToDB(string dbConnString)
         {
-            var client = new MongoClient();
+            var client = new MongoClient("mongodb+srv://311015:GErnamS8VyBxir64@cluster0-qvscx.mongodb.net/test?retryWrites=true&w=majority");
+            var database = client.GetDatabase(dbConnString);
+            //var client = new MongoClient();
             db = client.GetDatabase(dbConnString);
         }
 
@@ -151,7 +137,7 @@ namespace WindowsFormsApp2
         public List<T> LoadRecords<T>(string table, string type,string item)
         {
 
-            List<T> list = null;
+            List<T> list = new List<T>();
 
             if (db!=null)
             {

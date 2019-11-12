@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Center);
             this.areaLocationBox = new System.Windows.Forms.TextBox();
             this.caseTextBox = new System.Windows.Forms.TextBox();
             this.serialTextBox = new System.Windows.Forms.TextBox();
@@ -40,9 +40,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.validateInputTabs = new System.Windows.Forms.TabControl();
+            this.VerifyTab = new System.Windows.Forms.TabPage();
+            this.CheckInTab = new System.Windows.Forms.TabPage();
+            this.caseTextBox2 = new System.Windows.Forms.TextBox();
+            this.serialTextBox2 = new System.Windows.Forms.TextBox();
+            this.areaLocationBox2 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.serialInfoTextBox = new System.Windows.Forms.TextBox();
             this.serialInfoListView = new System.Windows.Forms.ListView();
             this.IDHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DateHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,18 +56,13 @@
             this.UserHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.CurLocHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.validateInputTabs = new System.Windows.Forms.TabControl();
-            this.VerifyTab = new System.Windows.Forms.TabPage();
-            this.CheckInTab = new System.Windows.Forms.TabPage();
-            this.serialTextBox2 = new System.Windows.Forms.TextBox();
-            this.areaLocationBox2 = new System.Windows.Forms.TextBox();
-            this.caseTextBox2 = new System.Windows.Forms.TextBox();
+            this.serialInfoTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.validateInputTabs.SuspendLayout();
             this.VerifyTab.SuspendLayout();
             this.CheckInTab.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // areaLocationBox
@@ -116,11 +116,11 @@
             // 
             // serialListView
             // 
-            listViewGroup9.Header = "ListViewGroup";
-            listViewGroup9.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup9.Name = "listViewGroup1";
+            listViewGroup5.Header = "ListViewGroup";
+            listViewGroup5.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup5.Name = "listViewGroup1";
             this.serialListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup9});
+            listViewGroup5});
             this.serialListView.HideSelection = false;
             this.serialListView.Location = new System.Drawing.Point(499, 116);
             this.serialListView.Name = "serialListView";
@@ -152,10 +152,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(12, 39);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(893, 596);
+            this.tabControl1.Size = new System.Drawing.Size(893, 569);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
@@ -170,10 +170,72 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(885, 570);
+            this.tabPage1.Size = new System.Drawing.Size(885, 543);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // validateInputTabs
+            // 
+            this.validateInputTabs.Controls.Add(this.VerifyTab);
+            this.validateInputTabs.Controls.Add(this.CheckInTab);
+            this.validateInputTabs.Location = new System.Drawing.Point(6, 115);
+            this.validateInputTabs.Name = "validateInputTabs";
+            this.validateInputTabs.SelectedIndex = 0;
+            this.validateInputTabs.Size = new System.Drawing.Size(200, 277);
+            this.validateInputTabs.TabIndex = 11;
+            this.validateInputTabs.Tag = "";
+            this.validateInputTabs.SelectedIndexChanged += new System.EventHandler(this.validateInputTabs_SelectedIndexChanged);
+            // 
+            // VerifyTab
+            // 
+            this.VerifyTab.Controls.Add(this.caseTextBox);
+            this.VerifyTab.Controls.Add(this.serialTextBox);
+            this.VerifyTab.Controls.Add(this.areaLocationBox);
+            this.VerifyTab.Location = new System.Drawing.Point(4, 22);
+            this.VerifyTab.Name = "VerifyTab";
+            this.VerifyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.VerifyTab.Size = new System.Drawing.Size(192, 251);
+            this.VerifyTab.TabIndex = 0;
+            this.VerifyTab.Text = "Verify";
+            this.VerifyTab.UseVisualStyleBackColor = true;
+            // 
+            // CheckInTab
+            // 
+            this.CheckInTab.Controls.Add(this.caseTextBox2);
+            this.CheckInTab.Controls.Add(this.serialTextBox2);
+            this.CheckInTab.Controls.Add(this.areaLocationBox2);
+            this.CheckInTab.Location = new System.Drawing.Point(4, 22);
+            this.CheckInTab.Name = "CheckInTab";
+            this.CheckInTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CheckInTab.Size = new System.Drawing.Size(192, 251);
+            this.CheckInTab.TabIndex = 1;
+            this.CheckInTab.Text = "CheckIn";
+            this.CheckInTab.UseVisualStyleBackColor = true;
+            // 
+            // caseTextBox2
+            // 
+            this.caseTextBox2.Location = new System.Drawing.Point(19, 148);
+            this.caseTextBox2.Name = "caseTextBox2";
+            this.caseTextBox2.Size = new System.Drawing.Size(154, 20);
+            this.caseTextBox2.TabIndex = 5;
+            this.caseTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.caseTextBox_KeyDown);
+            // 
+            // serialTextBox2
+            // 
+            this.serialTextBox2.Location = new System.Drawing.Point(19, 201);
+            this.serialTextBox2.Name = "serialTextBox2";
+            this.serialTextBox2.Size = new System.Drawing.Size(154, 20);
+            this.serialTextBox2.TabIndex = 4;
+            this.serialTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serialTextBox_KeyDown);
+            // 
+            // areaLocationBox2
+            // 
+            this.areaLocationBox2.Location = new System.Drawing.Point(19, 95);
+            this.areaLocationBox2.Name = "areaLocationBox2";
+            this.areaLocationBox2.Size = new System.Drawing.Size(154, 20);
+            this.areaLocationBox2.TabIndex = 3;
+            this.areaLocationBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.areaLocationBox_KeyDown);
             // 
             // tabPage2
             // 
@@ -196,14 +258,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // serialInfoTextBox
-            // 
-            this.serialInfoTextBox.Location = new System.Drawing.Point(74, 31);
-            this.serialInfoTextBox.Name = "serialInfoTextBox";
-            this.serialInfoTextBox.Size = new System.Drawing.Size(265, 20);
-            this.serialInfoTextBox.TabIndex = 0;
-            this.serialInfoTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serialInfoTextBox_KeyDown);
             // 
             // serialInfoListView
             // 
@@ -257,67 +311,13 @@
             this.CurLocHeader.Text = "CurrentLocation";
             this.CurLocHeader.Width = 228;
             // 
-            // validateInputTabs
+            // serialInfoTextBox
             // 
-            this.validateInputTabs.Controls.Add(this.VerifyTab);
-            this.validateInputTabs.Controls.Add(this.CheckInTab);
-            this.validateInputTabs.Location = new System.Drawing.Point(6, 115);
-            this.validateInputTabs.Name = "validateInputTabs";
-            this.validateInputTabs.SelectedIndex = 0;
-            this.validateInputTabs.Size = new System.Drawing.Size(200, 277);
-            this.validateInputTabs.TabIndex = 11;
-            this.validateInputTabs.Tag = "";
-            this.validateInputTabs.SelectedIndexChanged += new System.EventHandler(this.validateInputTabs_SelectedIndexChanged);
-            // 
-            // VerifyTab
-            // 
-            this.VerifyTab.Controls.Add(this.caseTextBox);
-            this.VerifyTab.Controls.Add(this.serialTextBox);
-            this.VerifyTab.Controls.Add(this.areaLocationBox);
-            this.VerifyTab.Location = new System.Drawing.Point(4, 22);
-            this.VerifyTab.Name = "VerifyTab";
-            this.VerifyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.VerifyTab.Size = new System.Drawing.Size(192, 251);
-            this.VerifyTab.TabIndex = 0;
-            this.VerifyTab.Text = "Verify";
-            this.VerifyTab.UseVisualStyleBackColor = true;
-            // 
-            // CheckInTab
-            // 
-            this.CheckInTab.Controls.Add(this.caseTextBox2);
-            this.CheckInTab.Controls.Add(this.serialTextBox2);
-            this.CheckInTab.Controls.Add(this.areaLocationBox2);
-            this.CheckInTab.Location = new System.Drawing.Point(4, 22);
-            this.CheckInTab.Name = "CheckInTab";
-            this.CheckInTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CheckInTab.Size = new System.Drawing.Size(192, 251);
-            this.CheckInTab.TabIndex = 1;
-            this.CheckInTab.Text = "CheckIn";
-            this.CheckInTab.UseVisualStyleBackColor = true;
-            // 
-            // serialTextBox2
-            // 
-            this.serialTextBox2.Location = new System.Drawing.Point(19, 201);
-            this.serialTextBox2.Name = "serialTextBox2";
-            this.serialTextBox2.Size = new System.Drawing.Size(154, 20);
-            this.serialTextBox2.TabIndex = 4;
-            this.serialTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serialTextBox_KeyDown);
-            // 
-            // areaLocationBox2
-            // 
-            this.areaLocationBox2.Location = new System.Drawing.Point(19, 95);
-            this.areaLocationBox2.Name = "areaLocationBox2";
-            this.areaLocationBox2.Size = new System.Drawing.Size(154, 20);
-            this.areaLocationBox2.TabIndex = 3;
-            this.areaLocationBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.areaLocationBox_KeyDown);
-            // 
-            // caseTextBox2
-            // 
-            this.caseTextBox2.Location = new System.Drawing.Point(19, 148);
-            this.caseTextBox2.Name = "caseTextBox2";
-            this.caseTextBox2.Size = new System.Drawing.Size(154, 20);
-            this.caseTextBox2.TabIndex = 5;
-            this.caseTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.caseTextBox_KeyDown);
+            this.serialInfoTextBox.Location = new System.Drawing.Point(74, 31);
+            this.serialInfoTextBox.Name = "serialInfoTextBox";
+            this.serialInfoTextBox.Size = new System.Drawing.Size(265, 20);
+            this.serialInfoTextBox.TabIndex = 0;
+            this.serialInfoTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serialInfoTextBox_KeyDown);
             // 
             // Form1
             // 
@@ -331,13 +331,13 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.validateInputTabs.ResumeLayout(false);
             this.VerifyTab.ResumeLayout(false);
             this.VerifyTab.PerformLayout();
             this.CheckInTab.ResumeLayout(false);
             this.CheckInTab.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
