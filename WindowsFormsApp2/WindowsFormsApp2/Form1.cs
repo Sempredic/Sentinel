@@ -24,7 +24,7 @@ namespace WindowsFormsApp2
             serialTextBox.Enabled = false;
 
 
-            
+
         }
 
         private void ResizeListViewColumns(ListView lv)
@@ -47,7 +47,7 @@ namespace WindowsFormsApp2
                     lv.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
                 }
 
-                
+
             }
         }
 
@@ -56,7 +56,7 @@ namespace WindowsFormsApp2
             if (e.KeyCode == Keys.Enter)
             {
                 serialInfoListView.Items.Clear();
-                List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "Serial",serialInfoTextBox.Text);
+                List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "serial", serialInfoTextBox.Text);
 
 
                 if (list.Count != 0)
@@ -78,20 +78,20 @@ namespace WindowsFormsApp2
                             serialInfoListView.Items.Add(item);
                         }
 
-                        
+
                     }
-                    
+
                 }
 
                 ResizeListViewColumns(serialInfoListView);
             }
         }
 
-        private void areaLocationBox_KeyDown(object sender,KeyEventArgs e)
+        private void areaLocationBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                
+
 
                 if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
                 {
@@ -114,9 +114,9 @@ namespace WindowsFormsApp2
         {
             if (e.KeyCode == Keys.Enter)
             {
-                
 
-                List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "Case",caseTextBox.Text);
+
+                List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "caseID", caseTextBox.Text);
 
 
                 if (list.Count != 0)
@@ -146,7 +146,7 @@ namespace WindowsFormsApp2
                         serialTextBox2.Focus();
                     }
 
-                    
+
 
                 }
                 else
@@ -166,8 +166,8 @@ namespace WindowsFormsApp2
                     }
 
                 }
-                
-                
+
+
             }
         }
 
@@ -180,7 +180,7 @@ namespace WindowsFormsApp2
                 {
                     serialListBox.Items.Clear();
                     serialListView.Clear();
-                    
+
                     numScannedLabel.Text = serialListBox.Items.Count.ToString();
                     numUnitsLabel.Text = "0";
 
@@ -210,13 +210,13 @@ namespace WindowsFormsApp2
 
                         areaLocationBox2.Focus();
                     }
-                    
+
                 }
                 else if (serialTextBox.Text == "CLEARLIST" || serialTextBox2.Text.ToUpper() == "CLEARLIST")
                 {
                     serialListBox.Items.Clear();
                     serialListView.Clear();
-                    
+
                     numScannedLabel.Text = serialListBox.Items.Count.ToString();
                     numUnitsLabel.Text = "0";
 
@@ -231,7 +231,7 @@ namespace WindowsFormsApp2
                         serialTextBox2.Clear();
                         serialTextBox2.Focus();
                     }
-                    
+
                 }
                 else if (serialTextBox.Text == "CLEARCASE" || serialTextBox2.Text.ToUpper() == "CLEARCASE")
                 {
@@ -253,7 +253,7 @@ namespace WindowsFormsApp2
                     }
                     else
                     {
- 
+
                         serialTextBox2.Clear();
 
                         serialTextBox2.Enabled = false;
@@ -261,7 +261,7 @@ namespace WindowsFormsApp2
                         caseTextBox2.Clear();
                         caseTextBox2.Focus();
                     }
-                    
+
                 }
                 else if (serialTextBox2.Text == "ADD")
                 {
@@ -279,22 +279,31 @@ namespace WindowsFormsApp2
                         d.location = areaLocationBox2.Text;
                         d.lastLocation = true;
                         d.userID = "311015";
-                        
+
 
                         si.locationData.Add(d);
 
-                        if (MongoCRUD.GetInstance().RecordExists<SerialInfo>("Serial", item))
+
+
+                        if (MongoCRUD.GetInstance().RecordExists<SerialInfo>("Serial", item, "serial"))
                         {
                             MongoCRUD.GetInstance().AppendRecord<SerialInfo>("Serial", item, d);
                         }
                         else
                         {
-                            
 
-                            MongoCRUD.GetInstance().InsertRecord("Serial", si,item,caseTextBox2.Text);
+
+                            MongoCRUD.GetInstance().InsertRecord("Serial", si, item, caseTextBox2.Text);
                         }
-                        
+
                     }
+
+                    CaseInfo ci = new CaseInfo();
+                    ci.caseID = caseTextBox2.Text;
+                    ci.curLoc = areaLocationBox2.Text;
+
+                    MongoCRUD.GetInstance().InsertRecord("Cases", ci, caseTextBox2.Text, null);
+
 
 
                     serialListBox.Items.Clear();
@@ -310,7 +319,7 @@ namespace WindowsFormsApp2
                     caseTextBox2.Focus();
 
                 }
-                else 
+                else
                 {
                     if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
                     {
@@ -350,9 +359,28 @@ namespace WindowsFormsApp2
                         serialTextBox2.Clear();
                         serialTextBox2.Focus();
                     }
-                    
+
                 }
 
+            }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabControl1.TabPages["AgeReportTab"])
+            {
+                List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", null, null);
+
+                if (areas.Count!=0)
+                {
+                    AgeReportAreaListView.Items.Clear();
+
+                    foreach (AreaInfo a in areas)
+                    {
+                        AgeReportAreaListView.Items.Add(a.areaName);
+                    }
+                    
+                }
             }
         }
 
