@@ -58,12 +58,17 @@
             this.CurLocHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.serialInfoTextBox = new System.Windows.Forms.TextBox();
             this.AgeReportTab = new System.Windows.Forms.TabPage();
-            this.AgeReportMainListView = new System.Windows.Forms.ListView();
+            this.ageReportMainListView = new System.Windows.Forms.ListView();
             this.ageDateHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ageCaseHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ageAgeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ageLocationHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.AgeReportAreaListView = new System.Windows.Forms.ListView();
+            this.ageReportAreaListView = new System.Windows.Forms.ListView();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.adminSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.areaMgrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.ValidateTab.SuspendLayout();
             this.validateInputTabs.SuspendLayout();
@@ -71,6 +76,7 @@
             this.CheckInTab.SuspendLayout();
             this.SerialInfoTab.SuspendLayout();
             this.AgeReportTab.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // areaLocationBox
@@ -331,8 +337,8 @@
             // 
             // AgeReportTab
             // 
-            this.AgeReportTab.Controls.Add(this.AgeReportMainListView);
-            this.AgeReportTab.Controls.Add(this.AgeReportAreaListView);
+            this.AgeReportTab.Controls.Add(this.ageReportMainListView);
+            this.AgeReportTab.Controls.Add(this.ageReportAreaListView);
             this.AgeReportTab.Location = new System.Drawing.Point(4, 22);
             this.AgeReportTab.Name = "AgeReportTab";
             this.AgeReportTab.Padding = new System.Windows.Forms.Padding(3);
@@ -341,19 +347,19 @@
             this.AgeReportTab.Text = "Age Report";
             this.AgeReportTab.UseVisualStyleBackColor = true;
             // 
-            // AgeReportMainListView
+            // ageReportMainListView
             // 
-            this.AgeReportMainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ageReportMainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ageDateHeader,
             this.ageCaseHeader,
             this.ageAgeHeader,
             this.ageLocationHeader});
-            this.AgeReportMainListView.Location = new System.Drawing.Point(206, 78);
-            this.AgeReportMainListView.Name = "AgeReportMainListView";
-            this.AgeReportMainListView.Size = new System.Drawing.Size(662, 433);
-            this.AgeReportMainListView.TabIndex = 1;
-            this.AgeReportMainListView.UseCompatibleStateImageBehavior = false;
-            this.AgeReportMainListView.View = System.Windows.Forms.View.Details;
+            this.ageReportMainListView.Location = new System.Drawing.Point(206, 78);
+            this.ageReportMainListView.Name = "ageReportMainListView";
+            this.ageReportMainListView.Size = new System.Drawing.Size(662, 433);
+            this.ageReportMainListView.TabIndex = 1;
+            this.ageReportMainListView.UseCompatibleStateImageBehavior = false;
+            this.ageReportMainListView.View = System.Windows.Forms.View.Details;
             // 
             // ageDateHeader
             // 
@@ -375,14 +381,55 @@
             this.ageLocationHeader.Text = "Location";
             this.ageLocationHeader.Width = 360;
             // 
-            // AgeReportAreaListView
+            // ageReportAreaListView
             // 
-            this.AgeReportAreaListView.Location = new System.Drawing.Point(10, 18);
-            this.AgeReportAreaListView.Name = "AgeReportAreaListView";
-            this.AgeReportAreaListView.Size = new System.Drawing.Size(190, 493);
-            this.AgeReportAreaListView.TabIndex = 0;
-            this.AgeReportAreaListView.UseCompatibleStateImageBehavior = false;
-            this.AgeReportAreaListView.View = System.Windows.Forms.View.List;
+            this.ageReportAreaListView.Location = new System.Drawing.Point(10, 18);
+            this.ageReportAreaListView.Name = "ageReportAreaListView";
+            this.ageReportAreaListView.Size = new System.Drawing.Size(190, 493);
+            this.ageReportAreaListView.TabIndex = 0;
+            this.ageReportAreaListView.UseCompatibleStateImageBehavior = false;
+            this.ageReportAreaListView.View = System.Windows.Forms.View.List;
+            this.ageReportAreaListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ageReportAreaListView_MouseClick);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(906, 24);
+            this.menuStrip1.TabIndex = 13;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(42, 20);
+            this.toolStripMenuItem2.Text = "User";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adminSettingsToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(61, 20);
+            this.toolStripMenuItem1.Text = "Settings";
+            // 
+            // adminSettingsToolStripMenuItem
+            // 
+            this.adminSettingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.areaMgrToolStripMenuItem});
+            this.adminSettingsToolStripMenuItem.Name = "adminSettingsToolStripMenuItem";
+            this.adminSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.adminSettingsToolStripMenuItem.Text = "Admin Settings";
+            // 
+            // areaMgrToolStripMenuItem
+            // 
+            this.areaMgrToolStripMenuItem.Name = "areaMgrToolStripMenuItem";
+            this.areaMgrToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.areaMgrToolStripMenuItem.Text = "Area Mgr";
+            this.areaMgrToolStripMenuItem.Click += new System.EventHandler(this.areaMgrToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -390,7 +437,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 610);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.tabControl1.ResumeLayout(false);
@@ -404,7 +453,10 @@
             this.SerialInfoTab.ResumeLayout(false);
             this.SerialInfoTab.PerformLayout();
             this.AgeReportTab.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -439,12 +491,17 @@
         private System.Windows.Forms.TextBox serialTextBox2;
         private System.Windows.Forms.TextBox areaLocationBox2;
         private System.Windows.Forms.TabPage AgeReportTab;
-        private System.Windows.Forms.ListView AgeReportMainListView;
+        private System.Windows.Forms.ListView ageReportMainListView;
         private System.Windows.Forms.ColumnHeader ageDateHeader;
         private System.Windows.Forms.ColumnHeader ageCaseHeader;
         private System.Windows.Forms.ColumnHeader ageAgeHeader;
         private System.Windows.Forms.ColumnHeader ageLocationHeader;
-        private System.Windows.Forms.ListView AgeReportAreaListView;
+        private System.Windows.Forms.ListView ageReportAreaListView;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem adminSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem areaMgrToolStripMenuItem;
     }
 }
 

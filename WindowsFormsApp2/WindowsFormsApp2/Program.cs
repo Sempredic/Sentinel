@@ -194,6 +194,16 @@ namespace WindowsFormsApp2
             UpdateLastLocations(ld.ID, id);
         }
 
+        public void AppendRecord<T>(string table, string id, LocationObject ld)
+        {
+            var collection = db.GetCollection<T>(table);
+
+            var filter = Builders<T>.Filter.Eq("areaName", id);
+            var update = Builders<T>.Update.Push("locationsList", ld);
+            var result = collection.UpdateOne(filter, update);
+
+        }
+
         public void UpdateLastLocations(string id, string serial)
         {
             if (RecordExists<SerialInfo>("Serial", serial, "serial"))

@@ -244,3 +244,4 @@ C:\Users\311015\OneDrive - GameStop, Inc\Documents\GitHub\Sentinel\WindowsFormsA
 C:\Users\311015\OneDrive - GameStop, Inc\Documents\GitHub\Sentinel\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.CopyComplete
 C:\Users\311015\OneDrive - GameStop, Inc\Documents\GitHub\Sentinel\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.exe
 C:\Users\311015\OneDrive - GameStop, Inc\Documents\GitHub\Sentinel\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.pdb
+C:\Users\311015\OneDrive - GameStop, Inc\Documents\GitHub\Sentinel\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.SettingsForm.resources

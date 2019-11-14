@@ -18,6 +18,7 @@ namespace WindowsFormsApp2
             InitializeComponent();
 
             areaComboBox.Items.Add("Outbound Area");
+            areaComboBox.Items.Add("CellA");
 
             caseTextBox.Enabled = false;
 
@@ -373,15 +374,48 @@ namespace WindowsFormsApp2
 
                 if (areas.Count!=0)
                 {
-                    AgeReportAreaListView.Items.Clear();
+                    ageReportAreaListView.Items.Clear();
 
                     foreach (AreaInfo a in areas)
                     {
-                        AgeReportAreaListView.Items.Add(a.areaName);
+                        ageReportAreaListView.Items.Add(a.areaName);
                     }
                     
                 }
             }
+        }
+
+        private void ageReportAreaListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListViewHitTestInfo HI = ageReportAreaListView.HitTest(e.Location);
+
+            List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", HI.Item.Name);
+
+            if (areas.Count != 0)
+            {
+                ageReportMainListView.Items.Clear();
+
+                foreach (AreaInfo a in areas)
+                {
+                    foreach (LocationObject loc in a.locationsList)
+                    {
+                        foreach (CaseInfo ci in loc.casesList)
+                        {
+                            ageReportMainListView.Items.Add(ci.caseID);
+                        }
+                    }
+                    
+                }
+
+            }
+
+        }
+
+        private void areaMgrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var myForm = new SettingsForm();
+            myForm.Show();
+
         }
 
         private void validateInputTabs_SelectedIndexChanged(object sender, EventArgs e)
