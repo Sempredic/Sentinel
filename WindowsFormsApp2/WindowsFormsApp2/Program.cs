@@ -21,11 +21,6 @@ namespace WindowsFormsApp2
 
             MongoCRUD.GetInstance().ConnectToDB("Serials");
 
-            AreaInfo a = new AreaInfo();
-
-            a.areaName = "CELLA";
-
-            //MongoCRUD.GetInstance().InsertRecord<AreaInfo>("Areas",a,a.areaName,null);
 
             if (MongoCRUD.GetInstance().DBConnectionStatus()) {
                 Application.EnableVisualStyles();
@@ -204,6 +199,16 @@ namespace WindowsFormsApp2
 
         }
 
+        public void UpdateLocationCases(LocationObject lo, AreaInfo ai, CaseInfo ci)
+        {
+            var collection = db.GetCollection<AreaInfo>("Areas");
+
+            Console.WriteLine(lo.locName + "SHITFUCK");
+
+            collection.FindOneAndUpdate(c => c.areaName == ai.areaName && c.locationsList.Any(s => s.locName == lo.locName),
+                            Builders<AreaInfo>.Update.Push(c => c.locationsList[-1].casesList, ci));
+        }
+
         public void UpdateLastLocations(string id, string serial)
         {
             if (RecordExists<SerialInfo>("Serial", serial, "serial"))
@@ -211,11 +216,13 @@ namespace WindowsFormsApp2
                 SerialInfo list = LoadRecords<SerialInfo>("Serial", "serial", serial)[0];
                 var collection = db.GetCollection<SerialInfo>("Serial");
 
-
+                
+                //loop through each locationData object and if object doesn't match the id of most recent entry then set last location to false, otherwise true
                 foreach (LocationData ld in list.locationData)
                 {
 
                     // Save the entire document back to the database
+                   
                     if (ld.ID != id)
                     {
 

@@ -17,14 +17,31 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
 
-            areaComboBox.Items.Add("Outbound Area");
-            areaComboBox.Items.Add("CellA");
+            LoadAreaComboBox();
 
             caseTextBox.Enabled = false;
 
             serialTextBox.Enabled = false;
 
 
+
+        }
+
+        private void LoadAreaComboBox()
+        {
+   
+            List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", null, null);
+
+            if (areas.Count != 0)
+            {
+                areaComboBox.Items.Clear();
+
+                foreach (AreaInfo a in areas)
+                {
+                    areaComboBox.Items.Add(a.areaName);
+                }
+
+            }
 
         }
 
@@ -92,22 +109,55 @@ namespace WindowsFormsApp2
         {
             if (e.KeyCode == Keys.Enter)
             {
+                bool locationExists = false;
+                string areaName = (string)areaComboBox.SelectedItem;
+
+                List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", areaName);
 
 
-                if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
+                if (areas.Count != 0)
                 {
-                    caseTextBox.Enabled = true;
 
-                    this.SelectNextControl(ActiveControl, true, true, true, true);
-                    areaLocationBox.Enabled = false;
-                }
-                else
-                {
-                    caseTextBox2.Enabled = true;
+                    foreach (LocationObject lo in areas[0].locationsList)
+                    {
+                        if (lo.locName == areaLocationBox.Text)
+                        {
+                            locationExists = true;
 
-                    this.SelectNextControl(ActiveControl, true, true, true, true);
-                    areaLocationBox2.Enabled = false;
+                            
+                        }else if (lo.locName == areaLocationBox2.Text)
+                        {
+                            locationExists = true;
+                        }
+                    }
+
+                    if (locationExists)
+                    {
+                        if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
+                        {
+                            caseTextBox.Enabled = true;
+
+                            this.SelectNextControl(ActiveControl, true, true, true, true);
+                            areaLocationBox.Enabled = false;
+                        }
+                        else
+                        {
+                            caseTextBox2.Enabled = true;
+
+                            this.SelectNextControl(ActiveControl, true, true, true, true);
+                            areaLocationBox2.Enabled = false;
+                        }
+                    }
+                    else
+                    {
+                        areaLocationBox.Clear();
+                        areaLocationBox2.Clear();
+                        Console.WriteLine("Nobody here wrong again man");
+                    }
+
                 }
+
+                
             }
         }
 
@@ -305,7 +355,7 @@ namespace WindowsFormsApp2
 
                     MongoCRUD.GetInstance().InsertRecord("Cases", ci, caseTextBox2.Text, null);
 
-
+                    UpdateAreaLocCases(ci, areaComboBox.SelectedItem.ToString());
 
                     serialListBox.Items.Clear();
                     serialListView.Clear();
@@ -318,6 +368,8 @@ namespace WindowsFormsApp2
                     caseTextBox2.Enabled = true;
                     caseTextBox2.Clear();
                     caseTextBox2.Focus();
+
+                    
 
                 }
                 else
@@ -366,6 +418,30 @@ namespace WindowsFormsApp2
             }
         }
 
+        private void UpdateAreaLocCases(CaseInfo ci, string areaID)
+        {
+
+            List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", areaID);
+
+            if (areas.Count != 0)
+            {
+                Console.WriteLine(areas[0].locationsList + " YA KNOW");
+                foreach (LocationObject lo in areas[0].locationsList)
+                {
+                    if (lo.locName == ci.curLoc)
+                    {
+                        if (!lo.casesList.Contains(ci))
+                        {
+                            MongoCRUD.GetInstance().UpdateLocationCases(lo, areas[0], ci);
+                        }
+                    }
+                    
+                }
+
+            }
+
+        }
+
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedTab == tabControl1.TabPages["AgeReportTab"])
@@ -389,22 +465,20 @@ namespace WindowsFormsApp2
         {
             ListViewHitTestInfo HI = ageReportAreaListView.HitTest(e.Location);
 
-            List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", HI.Item.Name);
+            Console.WriteLine(HI.Item.Text);
+
+            List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", HI.Item.Text);
 
             if (areas.Count != 0)
             {
                 ageReportMainListView.Items.Clear();
 
-                foreach (AreaInfo a in areas)
+                foreach (LocationObject loc in areas[0].locationsList)
                 {
-                    foreach (LocationObject loc in a.locationsList)
+                    foreach (CaseInfo ci in loc.casesList)
                     {
-                        foreach (CaseInfo ci in loc.casesList)
-                        {
-                            ageReportMainListView.Items.Add(ci.caseID);
-                        }
+                        ageReportMainListView.Items.Add(ci.caseID);
                     }
-                    
                 }
 
             }
