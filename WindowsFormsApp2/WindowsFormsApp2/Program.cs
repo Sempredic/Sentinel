@@ -20,7 +20,7 @@ namespace WindowsFormsApp2
         {
 
             MongoCRUD.GetInstance().ConnectToDB("Serials");
-
+            Console.WriteLine(MongoCRUD.GetInstance().GetServerTime().ToString());
 
             if (MongoCRUD.GetInstance().DBConnectionStatus()) {
                 Application.EnableVisualStyles();
@@ -161,6 +161,8 @@ namespace WindowsFormsApp2
                     var caseCollection = db.GetCollection<CaseInfo>("Cases");
                     caseCollection.FindOneAndUpdate(c => c.caseID == id,
                                 Builders<CaseInfo>.Update.Set(c => c.curLoc, a.curLoc));
+                    caseCollection.FindOneAndUpdate(c => c.caseID == id,
+                               Builders<CaseInfo>.Update.Set(c => c.ageInfo, a.ageInfo));
                 }
                 
             }else if (typeParameterType.Name == "AreaInfo")
@@ -203,10 +205,14 @@ namespace WindowsFormsApp2
         {
             var collection = db.GetCollection<AreaInfo>("Areas");
 
-            Console.WriteLine(lo.locName + "SHITFUCK");
+            var filter = Builders<AreaInfo>.Filter.And(Builders<AreaInfo>.Filter.Where(c => c.areaName == ai.areaName),
+                Builders<AreaInfo>.Filter.Where(c => c.locationsList.Any(x => x.locName == lo.locName)));
+            var update = Builders<AreaInfo>.Update.PullFilter("locationsList.$[].casesList", Builders<BsonDocument>.Filter.Eq("caseID", ci.caseID));
+
+            collection.UpdateOne(filter, update);
 
             collection.FindOneAndUpdate(c => c.areaName == ai.areaName && c.locationsList.Any(s => s.locName == lo.locName),
-                            Builders<AreaInfo>.Update.Push(c => c.locationsList[-1].casesList, ci));
+                          Builders<AreaInfo>.Update.Push(c => c.locationsList[-1].casesList, ci));
         }
 
         public void UpdateLastLocations(string id, string serial)
@@ -265,7 +271,7 @@ namespace WindowsFormsApp2
                 }
                 else if (typeParameterType.Name == "AreaInfo")
                 {
-                    if (type!=null)
+                    if (type != null)
                     {
                         var filter = Builders<T>.Filter.Eq(type, item);
                         list = collection.Find(filter).ToList();
@@ -275,7 +281,7 @@ namespace WindowsFormsApp2
                         var filter = new BsonDocument();
                         list = collection.Find(filter).ToList();
                     }
-                    
+
                 }
 
             }
@@ -288,6 +294,16 @@ namespace WindowsFormsApp2
             return list;
         }
 
+        public DateTime GetServerTime()
+        {
+            var serverStatusCmd = new BsonDocumentCommand<BsonDocument>(new BsonDocument { { "serverStatus", 1 } });
+            var result = db.RunCommand(serverStatusCmd);
+            var localTime = result["localTime"].ToLocalTime();
+
+            return localTime;
+        }
+
+        
 
     }
 
@@ -372,13 +388,12 @@ namespace WindowsFormsApp2
         [BsonId]
         public Guid ID;
         public string caseID;
-        public string ageDays;
-        public AgeInfo ageInfo;
+        public string ageInfo;
         public string curLoc;
 
         public CaseInfo()
         {
-            ageInfo = new AgeInfo();
+
         }
     }
 }

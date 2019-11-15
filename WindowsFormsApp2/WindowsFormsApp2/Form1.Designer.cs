@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Center);
             this.areaLocationBox = new System.Windows.Forms.TextBox();
             this.caseTextBox = new System.Windows.Forms.TextBox();
             this.serialTextBox = new System.Windows.Forms.TextBox();
@@ -130,11 +130,11 @@
             // 
             // serialListView
             // 
-            listViewGroup3.Header = "ListViewGroup";
-            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup3.Name = "listViewGroup1";
+            listViewGroup1.Header = "ListViewGroup";
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup1.Name = "listViewGroup1";
             this.serialListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3});
+            listViewGroup1});
             this.serialListView.HideSelection = false;
             this.serialListView.Location = new System.Drawing.Point(499, 116);
             this.serialListView.Name = "serialListView";
@@ -213,7 +213,7 @@
             this.VerifyTab.Padding = new System.Windows.Forms.Padding(3);
             this.VerifyTab.Size = new System.Drawing.Size(192, 251);
             this.VerifyTab.TabIndex = 0;
-            this.VerifyTab.Text = "Verify";
+            this.VerifyTab.Text = "Bound";
             this.VerifyTab.UseVisualStyleBackColor = true;
             // 
             // CheckInTab
@@ -421,13 +421,13 @@
             this.adminSettingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.areaMgrToolStripMenuItem});
             this.adminSettingsToolStripMenuItem.Name = "adminSettingsToolStripMenuItem";
-            this.adminSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.adminSettingsToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.adminSettingsToolStripMenuItem.Text = "Admin Settings";
             // 
             // areaMgrToolStripMenuItem
             // 
             this.areaMgrToolStripMenuItem.Name = "areaMgrToolStripMenuItem";
-            this.areaMgrToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.areaMgrToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.areaMgrToolStripMenuItem.Text = "Area Mgr";
             this.areaMgrToolStripMenuItem.Click += new System.EventHandler(this.areaMgrToolStripMenuItem_Click);
             // 

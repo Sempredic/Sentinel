@@ -263,7 +263,7 @@ namespace WindowsFormsApp2
                     }
 
                 }
-                else if (serialTextBox.Text == "CLEARLIST" || serialTextBox2.Text.ToUpper() == "CLEARLIST")
+                else if (serialTextBox.Text.ToUpper() == "CLEARLIST" || serialTextBox2.Text.ToUpper() == "CLEARLIST")
                 {
                     serialListBox.Items.Clear();
                     serialListView.Clear();
@@ -271,9 +271,22 @@ namespace WindowsFormsApp2
                     numScannedLabel.Text = serialListBox.Items.Count.ToString();
                     numUnitsLabel.Text = "0";
 
-
                     if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
                     {
+                        List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "caseID", caseTextBox.Text);
+
+
+                        if (list.Count != 0)
+                        {
+                            numUnitsLabel.Text = list.Count.ToString();
+
+                            foreach (SerialInfo item in list)
+                            {
+                                serialListView.Items.Add(item.serial);
+
+                            }
+                        }
+
                         serialTextBox.Clear();
                         serialTextBox.Focus();
                     }
@@ -284,7 +297,7 @@ namespace WindowsFormsApp2
                     }
 
                 }
-                else if (serialTextBox.Text == "CLEARCASE" || serialTextBox2.Text.ToUpper() == "CLEARCASE")
+                else if (serialTextBox.Text.ToUpper() == "CLEARCASE" || serialTextBox2.Text.ToUpper() == "CLEARCASE")
                 {
 
                     serialListBox.Items.Clear();
@@ -314,7 +327,106 @@ namespace WindowsFormsApp2
                     }
 
                 }
-                else if (serialTextBox2.Text == "ADD")
+                else if (serialTextBox.Text.ToUpper() == "VALIDATE")
+                {
+                    bool isBad = false;
+
+                    List<SerialInfo> list = MongoCRUD.GetInstance().LoadRecords<SerialInfo>("Serial", "caseID", caseTextBox.Text);
+                    List<string> serialList = new List<string>();
+
+                    if (list.Count != 0)
+                    {
+
+                        foreach (SerialInfo serial in list)
+                        {
+                            serialList.Add(serial.serial);
+                        }
+
+                        foreach (string item in serialListBox.Items)
+                        {
+                            if (!serialList.Contains(item))
+                            {
+                                isBad = true;
+                            }
+
+                        }
+                    } 
+                    
+
+                    if (isBad)
+                    {
+                        ShowDialog("Unable to commit case, try again", "Cannot Validate", false);
+
+                        serialListBox.Items.Clear();
+                        serialListView.Clear();
+
+                        numScannedLabel.Text = serialListBox.Items.Count.ToString();
+                        numUnitsLabel.Text = "0";
+
+                        if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
+                        {
+                            serialTextBox.Clear();
+
+                            serialTextBox.Enabled = false;
+                            caseTextBox.Enabled = true;
+                            caseTextBox.Clear();
+                            caseTextBox.Focus();
+                        }
+
+                    }
+                    else
+                    {
+                        
+                        foreach (string item in serialListBox.Items)
+                        {
+                            SerialInfo si = new SerialInfo();
+
+                            si.serial = item;
+
+                            LocationData d = new LocationData();
+                            d.curCase = caseTextBox.Text;
+                            d.date = DateTime.UtcNow.Date.ToString("MM/dd/yyyy");
+                            d.time = DateTime.Now.ToString("h:mm:ss tt");
+                            d.location = areaLocationBox.Text;
+                            d.lastLocation = true;
+                            d.userID = "311015";
+
+                            si.locationData.Add(d);
+
+                            if (MongoCRUD.GetInstance().RecordExists<SerialInfo>("Serial", item, "serial"))
+                            {
+                                MongoCRUD.GetInstance().AppendRecord<SerialInfo>("Serial", item, d);
+                            }
+
+                        }
+
+                        CaseInfo ci = new CaseInfo();
+                        ci.caseID = caseTextBox.Text;
+                        ci.curLoc = areaLocationBox.Text;
+                        ci.ageInfo = DateTime.Now.ToString("MM-dd-yyyy hh: mm tt");
+
+
+                        MongoCRUD.GetInstance().InsertRecord("Cases", ci, caseTextBox.Text, null);
+
+                        UpdateAreaLocCases(ci, areaComboBox.SelectedItem.ToString());
+
+                        ShowDialog("Case Passed", "Case Validated", false);
+
+                        serialListBox.Items.Clear();
+                        serialListView.Clear();
+                        serialTextBox.Clear();
+
+                        numScannedLabel.Text = serialListBox.Items.Count.ToString();
+                        numUnitsLabel.Text = "0";
+
+                        serialTextBox.Enabled = false;
+                        caseTextBox.Enabled = true;
+                        caseTextBox.Clear();
+                        caseTextBox.Focus();
+                    }
+
+                }
+                else if (serialTextBox2.Text.ToUpper() == "ADD")
                 {
 
                     foreach (string item in serialListBox.Items)
@@ -325,7 +437,7 @@ namespace WindowsFormsApp2
 
                         LocationData d = new LocationData();
                         d.curCase = caseTextBox2.Text;
-                        d.date = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+                        d.date = DateTime.UtcNow.Date.ToString("MM/dd/yyyy");
                         d.time = DateTime.Now.ToString("h:mm:ss tt");
                         d.location = areaLocationBox2.Text;
                         d.lastLocation = true;
@@ -352,6 +464,8 @@ namespace WindowsFormsApp2
                     CaseInfo ci = new CaseInfo();
                     ci.caseID = caseTextBox2.Text;
                     ci.curLoc = areaLocationBox2.Text;
+                    ci.ageInfo = DateTime.Now.ToString("MM-dd-yyyy hh: mm tt");
+            
 
                     MongoCRUD.GetInstance().InsertRecord("Cases", ci, caseTextBox2.Text, null);
 
@@ -374,6 +488,8 @@ namespace WindowsFormsApp2
                 }
                 else
                 {
+                    List<string> serialsList = new List<string>();
+
                     if (validateInputTabs.SelectedTab == validateInputTabs.TabPages["VerifyTab"])
                     {
                         serialListBox.Items.Add(serialTextBox.Text);
@@ -382,6 +498,8 @@ namespace WindowsFormsApp2
 
                         for (int i = 0; i < serialListView.Items.Count; i++)
                         {
+                            serialsList.Add(serialListView.Items[i].Text);
+
                             if (serialTextBox.Text == serialListView.Items[i].Text)
                             {
                                 serialListView.Items[i].BackColor = Color.Green;
@@ -389,6 +507,10 @@ namespace WindowsFormsApp2
                             }
                         }
 
+                        if (!serialsList.Contains(serialTextBox.Text))
+                        {
+                            serialListView.Items.Add(serialTextBox.Text).BackColor = Color.Red;
+                        }
 
                         serialTextBox.Clear();
                         serialTextBox.Focus();
@@ -418,6 +540,21 @@ namespace WindowsFormsApp2
             }
         }
 
+        private AgeInfo CalculateAgeInfo(DateTime startDT, DateTime endDT)
+        {
+            AgeInfo ai = new AgeInfo();
+            DateTime currentDT = DateTime.UtcNow.Date;
+            int days = (endDT - startDT).Days;
+            int hours = (endDT - startDT).Hours;
+            int min = (endDT - startDT).Minutes;
+
+            ai.days = days;
+            ai.hours = hours;
+            ai.minute = min;
+
+            return ai;
+        }
+
         private void UpdateAreaLocCases(CaseInfo ci, string areaID)
         {
 
@@ -425,7 +562,7 @@ namespace WindowsFormsApp2
 
             if (areas.Count != 0)
             {
-                Console.WriteLine(areas[0].locationsList + " YA KNOW");
+
                 foreach (LocationObject lo in areas[0].locationsList)
                 {
                     if (lo.locName == ci.curLoc)
@@ -454,7 +591,9 @@ namespace WindowsFormsApp2
 
                     foreach (AreaInfo a in areas)
                     {
+
                         ageReportAreaListView.Items.Add(a.areaName);
+                        
                     }
                     
                 }
@@ -464,8 +603,6 @@ namespace WindowsFormsApp2
         private void ageReportAreaListView_MouseClick(object sender, MouseEventArgs e)
         {
             ListViewHitTestInfo HI = ageReportAreaListView.HitTest(e.Location);
-
-            Console.WriteLine(HI.Item.Text);
 
             List<AreaInfo> areas = MongoCRUD.GetInstance().LoadRecords<AreaInfo>("Areas", "areaName", HI.Item.Text);
 
@@ -477,7 +614,15 @@ namespace WindowsFormsApp2
                 {
                     foreach (CaseInfo ci in loc.casesList)
                     {
-                        ageReportMainListView.Items.Add(ci.caseID);
+                        DateTime dt = DateTime.Parse(ci.ageInfo);
+
+                        ListViewItem item = new ListViewItem(ci.ageInfo);
+                        item.SubItems.Add(ci.caseID);
+                        AgeInfo cai = CalculateAgeInfo(dt,MongoCRUD.GetInstance().GetServerTime());
+                        item.SubItems.Add("Days: " + cai.days + "  Hours: " + cai.hours + "  Min: " + cai.minute);
+                        item.SubItems.Add(ci.curLoc);
+
+                        ageReportMainListView.Items.Add(item);
                     }
                 }
 
@@ -517,6 +662,44 @@ namespace WindowsFormsApp2
 
             areaLocationBox.Focus();
             areaLocationBox2.Focus();
+        }
+
+        public static string ShowDialog(string text, string caption, bool textInput)
+        {
+            TextBox textBox = null;
+
+            Form prompt = new Form()
+            {
+                Width = 350,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            if (textInput)
+            {
+                textBox = new TextBox() { Left = 40, Top = 75, Width = 250 };
+
+                prompt.Controls.Add(textBox);
+
+            }
+
+            Label textLabel = new Label() { Text = text };
+            textLabel.AutoSize = false;
+            textLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            textLabel.Dock = DockStyle.Fill;
+
+            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox != null ? textBox.Text : "" : "";
         }
     }
 }
